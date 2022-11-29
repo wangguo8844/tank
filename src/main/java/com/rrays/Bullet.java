@@ -1,6 +1,7 @@
 package com.rrays;
 
 import com.rrays.abstractFactory.BaseBullet;
+import com.rrays.abstractFactory.BaseTank;
 
 import java.awt.*;
 
@@ -66,6 +67,8 @@ public class Bullet extends BaseBullet {
         move();
     }
 
+
+
     private void move() {
 
             switch (dir) {
@@ -90,7 +93,7 @@ public class Bullet extends BaseBullet {
             if (x <0 || y<0 || x>TankFrame.GAME_WIDTH || y>TankFrame.GAME_HEIGHT) live = false;
     }
 
-    public void collideWith(Tank tank) {
+    public void collideWith(BaseTank tank) {
         if (this.group == tank.getGroup()) return;
 
         //todo: 用一个rect来记录子弹的位置

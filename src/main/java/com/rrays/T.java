@@ -12,7 +12,7 @@ public class T {
         int initTankCount = Integer.parseInt((String) PropertyMgr.get("initTankCount"));
         //初始化敌人坦克
         for (int i = 0; i < initTankCount; i++) {
-            tf.tanks.add(new Tank(50 + i*30 ,200,Dir.UP, tf,Group.BAD));
+            tf.tanks.add(tf.gf.createTank(50 + i*30 ,200,Dir.UP,Group.BAD, tf));
         }
         while(true) {
             Thread.sleep(50);
