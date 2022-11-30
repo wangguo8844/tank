@@ -6,6 +6,6 @@ public class DefaultFireStrategy implements  FireStrategy{
     public void fire(Tank t) {
         int bX = t.x +t.WIDTH/2 - Bullet.WIDTH/2;
         int bY = t.y +t.HEIGHT/2 - Bullet.HEIGHT/2;
-        t.tf.gf.createBullet(bX, bY, t.dir,t.tf,t.group);
+        new Bullet(bX, bY, t.dir,t.gm,t.group);
     }
 }

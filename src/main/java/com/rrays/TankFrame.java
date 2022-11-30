@@ -1,7 +1,6 @@
 package com.rrays;
 
 
-import com.rrays.abstractFactory.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,13 +13,10 @@ import static com.rrays.Dir.*;
 
 public class TankFrame extends Frame {
 
-    Tank tank =new Tank(200,200,Dir.DOWN,this,Group.GOOD);
-    public List<BaseBullet> bullets = new ArrayList<>();
-    public List<Tank> tanks = new ArrayList<>();
-    public List<BaseExplode> explodes = new ArrayList<>();
-//    Explode e = new Explode(100,100, this);
-    public GameFactory gf = new RectFactory();
+    GameModel gm =new GameModel();
 
+
+//    Explode e = new Explode(100,100, this);
     public static final int GAME_WIDTH = 1080;
     public static final int GAME_HEIGHT = 960;
 
@@ -41,40 +37,9 @@ public class TankFrame extends Frame {
     }
     @Override
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.white);
-        g.drawString("子弹的数量"+bullets.size(),10,60);
-        g.drawString("敌人的数量"+tanks.size(),10,80);
-        g.drawString("爆炸的数量"+explodes.size(),10,90);
-        g.setColor(c);
+        gm.paint(g);
 
-        tank.paint(g);
 
-        for (int i = 0 ; i < bullets.size(); i++) {
-            bullets.get(i).paint(g);
-        }
-        for (int i = 0 ; i < tanks.size(); i++) {
-            tanks.get(i).paint(g);
-        }
-        for (int i = 0 ; i < explodes.size(); i++) {
-            explodes.get(i).paint(g);
-        }
-
-//        for(Bullet b: bullets){
-//            b.paint(g);
-//        }
-//        for (Tank t:tanks){
-//            t.paint(g);
-//        }
-
-        //碰撞监测
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < tanks.size(); j++) {
-                bullets.get(i).collideWith(tanks.get(j));
-
-            }
-            //  不知道什么问题  e.paint(g);
-        }
 
     }
 //        for (Iterator<Bullet> it = bullets.iterator(); it.hasNext()) {
@@ -123,7 +88,7 @@ public class TankFrame extends Frame {
                     dU = true;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    tank.fire();
+                    gm.getMainTank().fire();
                     break;
                 default:
                     break;
@@ -157,14 +122,14 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            if (!dL && !dU && !dD && !dR) tank.setMoving(false);
+            if (!dL && !dU && !dD && !dR) gm.getMainTank().setMoving(false);
             else {
-                tank.setMoving(true);
+                gm.getMainTank().setMoving(true);
 
-                if (dL) tank.setDir(LEFT);
-                if (dR) tank.setDir(RIGHT);
-                if (dU) tank.setDir(UP);
-                if (dD) tank.setDir(DOWN);
+                if (dL) gm.getMainTank().setDir(LEFT);
+                if (dR) gm.getMainTank().setDir(RIGHT);
+                if (dU) gm.getMainTank().setDir(UP);
+                if (dD) gm.getMainTank().setDir(DOWN);
             }
         }
     }

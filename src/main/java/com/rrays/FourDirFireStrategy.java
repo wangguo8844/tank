@@ -8,7 +8,7 @@ public class FourDirFireStrategy implements FireStrategy{
 
         Dir[] dirs = Dir.values();
         for(Dir dir: dirs) {
-           t.tf.gf.createBullet(bX, bY, t.dir,t.tf,t.group);
+           new Bullet(bX, bY, t.dir,t.gm,t.group);
         }
     }
 }

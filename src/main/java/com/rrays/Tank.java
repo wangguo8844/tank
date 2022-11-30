@@ -1,10 +1,9 @@
 package com.rrays;
 
-import com.rrays.abstractFactory.BaseTank;
 import java.awt.*;
 import java.util.Random;
 
-public class Tank extends BaseTank {
+public class Tank  {
 
 
     public int x,y;
@@ -18,11 +17,11 @@ public class Tank extends BaseTank {
 
     private Random random = new Random();
 
-    TankFrame tf ;
     private boolean living = true;
-
     private boolean moving = false;
     Group group= Group.BAD;
+    FireStrategy fs;
+    GameModel gm;
 
 
     public boolean isMoving() {
@@ -81,12 +80,12 @@ public class Tank extends BaseTank {
         this.dir = dir;
     }
 
-    public Tank(int x, int y, Dir dir, TankFrame tf,Group group) {
+    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tf = tf;
+        this.gm = gm;
         this.group = group;
 
         rect.x=this.x;
@@ -115,7 +114,7 @@ public class Tank extends BaseTank {
 
     public void paint(Graphics g) {
 
-        if(!living) tf.tanks.remove(this);
+        if(!living) gm.tanks.remove(this);
 
         switch (dir) {
             case LEFT:
@@ -185,7 +184,7 @@ public class Tank extends BaseTank {
         int bX = this.x +Tank.WIDTH/2 - Bullet.WIDTH/2;
         int bY = this.y +Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 
-        tf.bullets.add(new Bullet(bX, bY, this.dir,this.tf,this.group));
+        gm.bullets.add(new Bullet(bX, bY, this.dir,this.gm,this.group));
     }
 
     public void die() {
