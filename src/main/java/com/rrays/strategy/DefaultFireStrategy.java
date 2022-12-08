@@ -1,4 +1,7 @@
-package com.rrays;
+package com.rrays.strategy;
+
+import com.rrays.Bullet;
+import com.rrays.Tank;
 
 public class DefaultFireStrategy implements  FireStrategy{
 

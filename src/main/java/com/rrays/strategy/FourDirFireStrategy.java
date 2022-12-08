@@ -1,4 +1,8 @@
-package com.rrays;
+package com.rrays.strategy;
+
+import com.rrays.Bullet;
+import com.rrays.Dir;
+import com.rrays.Tank;
 
 public class FourDirFireStrategy implements FireStrategy{
     @Override
@@ -8,7 +12,7 @@ public class FourDirFireStrategy implements FireStrategy{
 
         Dir[] dirs = Dir.values();
         for(Dir dir: dirs) {
-           new Bullet(bX, bY, t.dir,t.gm,t.group);
+            new Bullet(bX,bY,t.dir,t.gm,t.getGroup());
         }
     }
 }

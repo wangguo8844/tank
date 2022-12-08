@@ -1,27 +1,39 @@
 package com.rrays;
 
+import com.rrays.strategy.DefaultFireStrategy;
+import com.rrays.strategy.FireStrategy;
+import com.rrays.strategy.FourDirFireStrategy;
+
 import java.awt.*;
 import java.util.Random;
 
-public class Tank  {
+public class Tank extends GameObject{
 
-
-    public int x,y;
-    Dir dir = Dir.DOWN;
-    Rectangle rect= new Rectangle();
     private final static int SPEED = Integer.parseInt((String) PropertyMgr.get("tankSpeed"));
     public static int WIDTH = ResourceMgr.goodTankD.getWidth();
     public static int HEIGHT = ResourceMgr.goodTankD.getHeight();
 
-    FireStrategy fireStrategy=new FourDirFireStrategy();
-
+    Rectangle rect= new Rectangle();
     private Random random = new Random();
+
+    public int x,y;
+    public Dir dir = Dir.DOWN;
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
+
+    FireStrategy fireStrategy=new FourDirFireStrategy();
 
     private boolean living = true;
     private boolean moving = false;
-    Group group= Group.BAD;
+    public Group group= Group.BAD;
     FireStrategy fs;
-    GameModel gm;
+    public GameModel gm;
 
 
     public boolean isMoving() {
@@ -114,7 +126,7 @@ public class Tank  {
 
     public void paint(Graphics g) {
 
-        if(!living) gm.tanks.remove(this);
+        if(!living) gm.remove(this);
 
         switch (dir) {
             case LEFT:
@@ -184,11 +196,14 @@ public class Tank  {
         int bX = this.x +Tank.WIDTH/2 - Bullet.WIDTH/2;
         int bY = this.y +Tank.HEIGHT/2 - Bullet.HEIGHT/2;
 
-        gm.bullets.add(new Bullet(bX, bY, this.dir,this.gm,this.group));
+        gm.add(new Bullet(bX, bY, this.dir,this.gm,this.group));
     }
 
     public void die() {
         this.living = false;
+    }
+    public void stop(){
+        moving=false;
     }
 }
 

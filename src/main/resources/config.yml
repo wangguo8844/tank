@@ -5,5 +5,7 @@ bulletSpeed=10
 gameWidth=1080
 gameHeight=720
 #fireStrategy
-goodFS=com.rrays.FourDirFireStrategy
-badFS=com.rrays.DefaultFireStrategy
+goodFS=com.rrays.strategy.FourDirFireStrategy
+badFS=com.rrays.strategy.DefaultFireStrategy
+#colliders
+colliders=com.rrays.chainOfResp.BulletTankCollider,com.rrays.chainOfResp.TankTankCollider
