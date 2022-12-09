@@ -8,26 +8,24 @@ public class Bullet extends GameObject {
     public static  int WIDTH = ResourceMgr.bulletD.getWidth();
     public static int HEIGHT = ResourceMgr.bulletD.getHeight();
     public boolean live = true;
-    private int x,y;
     private Dir dir;
     private boolean living = true;
-    private Group group = Group.BAD;
-    Rectangle rect= new Rectangle();
+    public Group group = Group.BAD;
+    public Rectangle rect= new Rectangle();
     GameModel gm =null;
 
 
-    public Bullet(int x,int y,Dir dir, GameModel gm, Group group) {
+    public Bullet(int x,int y,Dir dir, Group group) {
         this.x=x;
         this.y=y;
         this.dir=dir;
-        this.gm = gm;
         this.group = group;
         rect.x = this.x;
         rect.y =this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
 
-        gm.add(this);
+        GameModel.getInstance().add(this);
     }
 
 
@@ -41,7 +39,7 @@ public class Bullet extends GameObject {
 
     public void paint(Graphics g) {
         if (!live){
-            gm.remove(this);
+            GameModel.getInstance().remove(this);
         }
         switch (dir) {
             case LEFT:
@@ -63,6 +61,16 @@ public class Bullet extends GameObject {
         g.setColor(c);
 
         move();
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     private void move() {
@@ -89,24 +97,26 @@ public class Bullet extends GameObject {
             if (x <0 || y<0 || x>TankFrame.GAME_WIDTH || y>TankFrame.GAME_HEIGHT) live = false;
     }
 
-    public boolean collideWith(Tank tank) {
-        if (this.group == tank.getGroup()) return false;
+//    public boolean collideWith(Tank tank) {
+//        if (this.group == tank.getGroup()) return false;
+//
+//        //todo: 用一个rect来记录子弹的位置
+//        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH,HEIGHT);
+//        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH,Tank.HEIGHT);
+//        if(rect1.intersects(rect2)) {
+//            tank.die();
+//            this.die();
+//            int eX = tank.getX() +Tank.WIDTH/2 - Explode.WIDTH/2;
+//            int eY = tank.getY() +Tank.HEIGHT/2 - Explode.HEIGHT/2;
+//            gm.add(new Explode(eX,eY,gm));
+//            return true;
+//        }
+//        return false;
+//    }
 
-        //todo: 用一个rect来记录子弹的位置
-        Rectangle rect1 = new Rectangle(this.x, this.y, WIDTH,HEIGHT);
-        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH,Tank.HEIGHT);
-        if(rect1.intersects(rect2)) {
-            tank.die();
-            this.die();
-            int eX = tank.getX() +Tank.WIDTH/2 - Explode.WIDTH/2;
-            int eY = tank.getY() +Tank.HEIGHT/2 - Explode.HEIGHT/2;
-            gm.add(new Explode(eX,eY,gm));
-            return true;
-        }
-        return false;
-    }
-
-    private void die() {
+    public void die() {
         this.living = false;
     }
+
+
 }

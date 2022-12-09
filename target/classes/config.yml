@@ -7,3 +7,5 @@ gameHeight=720
 #fireStrategy
 goodFS=com.rrays.strategy.FourDirFireStrategy
 badFS=com.rrays.strategy.DefaultFireStrategy
+#colliders
+colliders=com.rrays.chainOfResp.BulletTankCollider,com.rrays.chainOfResp.TankTankCollider

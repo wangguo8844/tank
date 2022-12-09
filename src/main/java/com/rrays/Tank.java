@@ -13,10 +13,10 @@ public class Tank extends GameObject{
     public static int WIDTH = ResourceMgr.goodTankD.getWidth();
     public static int HEIGHT = ResourceMgr.goodTankD.getHeight();
 
-    Rectangle rect= new Rectangle();
+    public Rectangle rect= new Rectangle();
     private Random random = new Random();
 
-    public int x,y;
+    int oldX,oldY;
     public Dir dir = Dir.DOWN;
 
     public Rectangle getRect() {
@@ -33,7 +33,7 @@ public class Tank extends GameObject{
     private boolean moving = false;
     public Group group= Group.BAD;
     FireStrategy fs;
-    public GameModel gm;
+
 
 
     public boolean isMoving() {
@@ -92,41 +92,37 @@ public class Tank extends GameObject{
         this.dir = dir;
     }
 
-    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
+    public Tank(int x, int y, Dir dir, Group group) {
         super();
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.gm = gm;
         this.group = group;
 
         rect.x=this.x;
         rect.y=this.y;
 
         if (group == Group.GOOD) {
-            String goodFS = (String)PropertyMgr.get("goodFS");
+            String goodFSName = (String)PropertyMgr.get("goodFS");
             try {
-                fireStrategy=(FireStrategy) Class.forName(goodFS).newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+                fireStrategy=(FireStrategy) Class.forName(goodFSName).newInstance();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         else {
-//            fireStrategy= new DefaultFireStrategy();
-            fireStrategy = (t)->{
-                new DefaultFireStrategy();
-            };
+            fireStrategy= new DefaultFireStrategy();
+//            fireStrategy = (t)->{
+//                new DefaultFireStrategy();
+//            };
         }
+        GameModel.getInstance().add(this);
 
     }
 
     public void paint(Graphics g) {
 
-        if(!living) gm.remove(this);
+        if(!living) GameModel.getInstance().remove(this);
 
         switch (dir) {
             case LEFT:
@@ -146,6 +142,10 @@ public class Tank extends GameObject{
     }
 
     private void move() {
+        //记录上次的位置
+        oldX = x;
+        oldY = y;
+
         if(!moving)
             switch (dir) {
                 case LEFT:
@@ -189,21 +189,35 @@ public class Tank extends GameObject{
 
     }
 
-//    public void fire() {
-//        fireStrategy.fire(this);
-//    }
     public void fire() {
-        int bX = this.x +Tank.WIDTH/2 - Bullet.WIDTH/2;
-        int bY = this.y +Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-
-        gm.add(new Bullet(bX, bY, this.dir,this.gm,this.group));
+        fireStrategy.fire(this);
     }
+//    public void fire() {
+//        int bX = this.x +Tank.WIDTH/2 - Bullet.WIDTH/2;
+//        int bY = this.y +Tank.HEIGHT/2 - Bullet.HEIGHT/2;
+//
+//        GameModel.getInstance().add(new Bullet(bX, bY, this.dir,this.group));
+//    }
 
     public void die() {
         this.living = false;
     }
     public void stop(){
         moving=false;
+    }
+    public void back(){
+        x = oldX;
+        y = oldY;
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 }
 

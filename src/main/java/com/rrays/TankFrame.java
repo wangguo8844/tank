@@ -13,7 +13,7 @@ import static com.rrays.Dir.*;
 
 public class TankFrame extends Frame {
 
-    GameModel gm =new GameModel();
+    GameModel gm =GameModel.getInstance();
 
 
 //    Explode e = new Explode(100,100, this);

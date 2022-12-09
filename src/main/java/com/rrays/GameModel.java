@@ -11,8 +11,13 @@ import java.util.List;
 
 public class GameModel {
 
+    public static final GameModel INSTANCE =new GameModel();
 
-    Tank myTank =new Tank(200,200,Dir.DOWN,Group.GOOD,this);
+    static {
+        INSTANCE.init();
+    }
+
+    Tank myTank ;
 //    java.util.List<Bullet> bullets = new ArrayList<>();
 //    java.util.List<Tank> tanks = new ArrayList<>();
 //    List<Explode> explodes = new ArrayList<>();
@@ -22,12 +27,25 @@ public class GameModel {
 
     List <GameObject> objects = new ArrayList<>();
 
-    public GameModel(){
+    public static GameModel getInstance(){
+        return INSTANCE;
+    }
+
+    private GameModel(){ }
+    private void init(){
+        //初始换主站坦克
+        myTank=new Tank(200,200,Dir.DOWN,Group.GOOD);
         int initTankCount = Integer.parseInt((String) PropertyMgr.get("initTankCount"));
+
         //初始化敌人坦克
         for (int i = 0; i < initTankCount; i++) {
-            add(new Tank(50 + i*30 ,200,Dir.UP,Group.BAD,this));
+            new Tank(50 + i*30 ,200,Dir.UP,Group.BAD);
         }
+        //初始化墙
+        add(new Wall(150, 150 ,200, 50));
+        add(new Wall(500, 150 ,200, 50));
+        add(new Wall(300, 300 ,50, 200));
+        add(new Wall(550, 300 ,50, 200));
     }
 
     public void add (GameObject go){
